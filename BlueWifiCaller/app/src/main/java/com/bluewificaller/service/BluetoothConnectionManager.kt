@@ -20,6 +20,8 @@ import java.io.*
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 
 @Singleton
 class BluetoothManager @Inject constructor(
