@@ -74,16 +74,21 @@
         </activity>
 
         <!-- Call Service -->
-       <!-- <service
+      <!--  <service
             android:name=".service.CallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="connectedDevice|microphone" /> -->
+            android:foregroundServiceType="connectedDevice|microphone" /> 
 
         <service
         android:name=".service.CallService"
         android:exported="false"
-        android:foregroundServiceType="microphone" />
+        android:foregroundServiceType="microphone" />-->
+
+        <service
+        android:name=".service.CallService"
+        android:exported="false"
+        android:foregroundServiceType="microphone|connectedDevice" />
 
         <!-- WiFi Direct Receiver registered dynamically in code -->
 
