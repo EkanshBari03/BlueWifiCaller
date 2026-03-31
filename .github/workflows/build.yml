@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch: 
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,26 +22,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('BlueWifiCaller/**/*.gradle*', 'BlueWifiCaller/**/gradle-wrapper.properties') }}
-
-      - name: Grant execute permission for gradlew
-        # Pointing to the specific folder
-        run: chmod +x BlueWifiCaller/gradlew
+          gradle-version: 8.5 
+          # This tells GitHub to ignore the empty JAR file in your repo
+          validate-wrappers: false
 
       - name: Build Debug APK
-        # This tells GitHub to run the command INSIDE your project folder
         working-directory: ./BlueWifiCaller
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: BlueWifiCaller-debug
-          # Ensure this path matches where the APK actually ends up
-          path: BlueWifiCaller/app/build/outputs/apk/debug/app-debug.apk
+          path: BlueWifiCaller/**/build/outputs/apk/debug/*.apk
