@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.*
 import com.bluewificaller.model.ConnectionType
 import com.bluewificaller.ui.theme.*
 import com.bluewificaller.viewmodel.MainViewModel
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
