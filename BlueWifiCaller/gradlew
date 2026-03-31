@@ -1,0 +1,41 @@
+#!/bin/sh
+##############################################################################
+## Gradle start up script for UN*X
+## Auto-downloads gradle-wrapper.jar if not present
+##############################################################################
+
+# Determine the script directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+WRAPPER_JAR="$SCRIPT_DIR/gradle/wrapper/gradle-wrapper.jar"
+
+# Download wrapper jar if not present
+if [ ! -f "$WRAPPER_JAR" ]; then
+  echo "Downloading gradle-wrapper.jar..."
+  mkdir -p "$SCRIPT_DIR/gradle/wrapper"
+  if command -v curl > /dev/null 2>&1; then
+    curl -fsSL -o "$WRAPPER_JAR" \
+      "https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar"
+  elif command -v wget > /dev/null 2>&1; then
+    wget -q -O "$WRAPPER_JAR" \
+      "https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar"
+  else
+    echo "ERROR: Neither curl nor wget found. Please download gradle-wrapper.jar manually."
+    echo "URL: https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar"
+    echo "Place it at: gradle/wrapper/gradle-wrapper.jar"
+    exit 1
+  fi
+fi
+
+# Determine Java command
+if [ -n "$JAVA_HOME" ]; then
+  JAVACMD="$JAVA_HOME/bin/java"
+else
+  JAVACMD="java"
+fi
+
+which "$JAVACMD" > /dev/null 2>&1 || \
+  { echo "ERROR: 'java' not found. Install JDK 17+."; exit 1; }
+
+exec "$JAVACMD" \
+  -classpath "$WRAPPER_JAR" \
+  org.gradle.wrapper.GradleWrapperMain "$@"

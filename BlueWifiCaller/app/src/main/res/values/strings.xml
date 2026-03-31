@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BlueWifi Caller</string>
+    <string name="call_notification_channel">Calls</string>
+    <string name="discovery_notification_channel">Device Discovery</string>
+    <string name="permission_required">Permissions Required</string>
+    <string name="permission_rationale">Bluetooth, WiFi, Microphone, and Location permissions are required to discover nearby devices and make voice calls without internet.</string>
+</resources>
