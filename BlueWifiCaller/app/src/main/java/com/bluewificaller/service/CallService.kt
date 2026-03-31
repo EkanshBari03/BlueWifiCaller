@@ -19,6 +19,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.util.UUID
 import javax.inject.Inject
+import android.os.Vibrator
+import android.content.Context
 
 @AndroidEntryPoint
 class CallService : Service() {
@@ -124,6 +126,8 @@ class CallService : Service() {
         startAudio()
         startCallTimer()
         updateNotification("In call with ${peer.name}")
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.cancel() // This immediately stops the ringing vibration
     }
 
     fun rejectCall() {
@@ -131,12 +135,16 @@ class CallService : Service() {
         sendSignal(MessageType.CALL_REJECT, peer)
         _callState.value = CallState.ENDED
         resetState()
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.cancel() // This immediately stops the ringing vibration
     }
 
     fun endCall() {
         val peer = _connectedPeer.value ?: return
         sendSignal(MessageType.CALL_END, peer)
         finalizeCall()
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.cancel() // This immediately stops the ringing vibration
     }
 
     fun toggleMute() {
