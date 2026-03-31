@@ -21,6 +21,8 @@ import java.util.UUID
 import javax.inject.Inject
 import android.os.Vibrator
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 
 @AndroidEntryPoint
 class CallService : Service() {
@@ -337,6 +339,7 @@ class CallService : Service() {
         }
     }
 
+   /*
     private fun startForegroundCompat() {
         val notification = buildNotification("BlueWifi Caller is active")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -350,6 +353,31 @@ class CallService : Service() {
             startForeground(1, notification)
         }
     }
+    */
+
+    private fun startForegroundCompat() {
+    val notification = buildNotification("BlueWifi Caller is active")
+    
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        // Android 11+ (API 30+) knows about both Microphone and Connected Device
+        startForeground(
+            1,
+            notification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE or 
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+        )
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        // Android 10 (API 29) ONLY knows about Connected Device
+        startForeground(
+            1,
+            notification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+        )
+    } else {
+        // Android 9 and below
+        startForeground(1, notification)
+    }
+}
 
     private fun buildNotification(text: String): Notification {
         val intent = Intent(this, MainActivity::class.java)
